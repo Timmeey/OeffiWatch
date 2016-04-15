@@ -1,4 +1,4 @@
-package apiExample;
+
 
 import java.io.IOException;
 import java.util.Observable;
@@ -22,7 +22,7 @@ public class ApiExample {
 	private final static TimeUnit	refreshPeriodUnit	= TimeUnit.SECONDS;
 
 	public static void main(String[] args) throws InterruptedException {
-	   System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
+	   System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
 
 		// Getting the appropriate Grabber for Berlin (VBB)
 		Grabber vbbGrabber = Grabber.getVBBInstance();
