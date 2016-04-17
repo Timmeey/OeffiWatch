@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.timmeey.oeffiwatch</groupId>
 	<artifactId>parent</artifactId>
-	<version>${project_version}</version>
+	<version>0.0.1a</version>
 	<name>Öffi Watch</name>
 	<description>A watcher for BVG (Berlin public transportation) scheduled vs. expected departures, from Bus/Tram/Train stations</description>
 	<packaging>pom</packaging>
@@ -11,10 +11,7 @@
 		<module>oeffiwatch</module>
 		<module>samples</module>
 	</modules>
-	
-	<properties>
-	<project_version>0.0.1a</project_version>
-	</properties>
+
 
 	<build>
 		<plugins>

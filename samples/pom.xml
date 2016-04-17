@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.timmeey.oeffiwatch</groupId>
 		<artifactId>parent</artifactId>
-		<version>${project_version}</version>
+		<version>0.0.1a</version>
 	</parent>
 	<artifactId>samples</artifactId>
 	<name>samples</name>
@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>de.timmeey.oeffiwatch</groupId>
 			<artifactId>oeffiWatch</artifactId>
-			<version>${project_version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
