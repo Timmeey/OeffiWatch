@@ -1,7 +1,9 @@
 package de.timmeey.oeffiwatch.station.impl;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -15,9 +17,10 @@ import org.junit.Test;
 import de.timmeey.oeffiwatch.exception.AmbigiuousStationNameException;
 import de.timmeey.oeffiwatch.exception.ParseException;
 import de.timmeey.oeffiwatch.line.LineImplTest;
-import de.timmeey.oeffiwatch.station.impl.StationImpl;
 import de.timmeey.oeffiwatch.util.parser.HtmlStationParser;
-import de.timmeey.oeffiwatch.util.parser.HtmlStationParser.ParseResult;
+import de.timmeey.oeffiwatch.util.parser.ParseResult;
+import de.timmeey.oeffiwatch.util.parser.ParseResultImpl;
+import de.timmeey.oeffiwatch.util.parser.ParseResult.OeffiParseError;
 
 public class StationImplTest {
 
@@ -34,7 +37,7 @@ public class StationImplTest {
 	      throws IOException, AmbigiuousStationNameException, ParseException {
 		try{
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
-		ParseResult result = new ParseResult("Björnson", null, null, tmp);
+		ParseResult result = generateParseResult("Björnson", tmp,null,null,null);
 		StationImpl station = new StationImpl("Björnson", LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 		assertEquals("Björnson", station.name());
@@ -50,7 +53,7 @@ public class StationImplTest {
 	      throws IOException, AmbigiuousStationNameException, ParseException {
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
 		String[] alternatives = { "muh", "Foo" };
-		ParseResult result = new ParseResult(null, "Ambigiuous name", alternatives, null);
+		ParseResult result = generateParseResult(null,null, "Ambigiuous name",OeffiParseError.AMBIGIUOUS_STATION_NAME, alternatives);
 		StationImpl station = new StationImpl("Björnson", LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 	}
@@ -60,7 +63,7 @@ public class StationImplTest {
 	      throws IOException, AmbigiuousStationNameException, ParseException {
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
 		String[] alternatives = { "muh", "Foo" };
-		ParseResult result = new ParseResult(null, "Error", null, null);
+		ParseResult result = generateParseResult(null,null,"Error",OeffiParseError.PARSE_ERROR,null);
 		StationImpl station = new StationImpl("Björnson", LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 	}
@@ -71,14 +74,14 @@ public class StationImplTest {
 		final String street1 = "Björnson";
 		final String street2 = "Björnson (Berlin)";
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
-		ParseResult result = new ParseResult(street1, null, null, tmp);
+		ParseResult result = generateParseResult(street1, tmp,null,null,null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 
 		String[][] tmp1 = { { "15:31", "Tra M13", "Warschau" } };
 		
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
-		      generateParserfor(new ParseResult(street1, null, null, tmp1)), null);
+		      generateParserfor(generateParseResult(street1, tmp1,null,null,null)), null);
 		
 		Class ftClass = stationToMerge.getClass();
 
@@ -125,13 +128,13 @@ public class StationImplTest {
 		final String street1 = "Björnson";
 		final String street2 = "Björnson (Berlin)";
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
-		ParseResult result = new ParseResult(street1, null, null, tmp);
+		ParseResult result = generateParseResult(street1, tmp,null, null, null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 		
 
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
-		      generateParserfor(new ParseResult(street2, null, null, tmp)), null);
+		      generateParserfor(generateParseResult(street2,tmp,null,null,null)), null);
 		
 		Class ftClass = stationToMerge.getClass();
 
@@ -163,11 +166,11 @@ public class StationImplTest {
 
 		String[][] tmp1 = { { "15:29", "Tra M13", "Warschau" } };
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
-		      generateParserfor(new ParseResult(street1, null, null, tmp1)), null);
+		      generateParserfor(generateParseResult(street1,tmp1,null,null,null)), null);
 
 
 		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
-		ParseResult result = new ParseResult(street1, null, null, tmp);
+		ParseResult result = generateParseResult(street1, tmp,null,null,null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 		
@@ -201,7 +204,7 @@ public class StationImplTest {
 		final String street1 = "Björnson";
 		String[][] tmp = { { "15:29", "Tra M13", "Warschau" } };
 		StationImpl station = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
-		      generateParserfor(new ParseResult(street1, null, null, tmp)), null);
+		      generateParserfor(generateParseResult(street1, tmp,null,null,null)),null);
 		LocalDateTime oldTimestamp = station.lastUpdated(); // NOSONAR
 		tmp[0] = new String[3];
 		tmp[0][0] = "15:30";
@@ -220,6 +223,41 @@ public class StationImplTest {
 			@Override
 			public ParseResult stationLineInfo(String stationName) throws IOException {
 				return result;
+			}
+		};
+	}
+	
+	public static ParseResult generateParseResult(String stationName, String[][] lines, String errorMsg, OeffiParseError error, String[] alternativeNames){
+		return new ParseResult() {
+			
+			@Override
+			public String getStationName() {
+				// TODO Auto-generated method stub
+				return stationName;
+			}
+			
+			@Override
+			public String[][] getLines() {
+				// TODO Auto-generated method stub
+				return lines;
+			}
+			
+			@Override
+			public String getErrorMessage() {
+				// TODO Auto-generated method stub
+				return errorMsg;
+			}
+			
+			@Override
+			public OeffiParseError getError() {
+				// TODO Auto-generated method stub
+				return error;
+			}
+			
+			@Override
+			public String[] getAlternativeNames() {
+				// TODO Auto-generated method stub
+				return alternativeNames;
 			}
 		};
 	}

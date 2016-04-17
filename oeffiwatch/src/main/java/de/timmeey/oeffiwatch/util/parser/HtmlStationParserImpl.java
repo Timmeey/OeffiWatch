@@ -22,7 +22,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 	 * de.timmeey.oeffiWatch.HtmlStationParser#stationLineInfo(java.lang.String)
 	 */
 	@Override
-	public ParseResult stationLineInfo(String stationName) throws IOException {
+	public ParseResultImpl stationLineInfo(String stationName) throws IOException {
 		LOGGER.debug("Starting to query and parse for {}",stationName);
 		Map<String, String> data = new HashMap<>();
 		data.put("input", stationName);
@@ -30,9 +30,9 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 		return parseStationLineInfo(getHTML(BASE_URL, data));
 	}
 
-	ParseResult parseStationLineInfo(String html) throws IOException {
+	ParseResultImpl parseStationLineInfo(String html) throws IOException {
 		Document doc = Jsoup.parse(html);
-		return new ParseResult(getStationName(doc), getErrorMessage(doc),
+		return new ParseResultImpl(getStationName(doc), getErrorMessage(doc),
 		      getAmbigiuousStationNames(doc), getLines(doc));
 
 	}

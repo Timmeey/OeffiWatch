@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.timmeey.oeffiwatch.util.parser.HtmlStationParserImpl;
-import de.timmeey.oeffiwatch.util.parser.HtmlStationParser.ParseResult;
 
 public class HtmlStationParserImplTest {
 

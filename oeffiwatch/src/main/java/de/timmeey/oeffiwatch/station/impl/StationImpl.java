@@ -1,14 +1,10 @@
 package de.timmeey.oeffiwatch.station.impl;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
@@ -26,10 +22,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -38,13 +30,13 @@ import de.timmeey.oeffiwatch.Grabber;
 import de.timmeey.oeffiwatch.exception.AmbigiuousStationNameException;
 import de.timmeey.oeffiwatch.exception.ParseException;
 import de.timmeey.oeffiwatch.line.Line;
+import de.timmeey.oeffiwatch.line.Line.Vehicle;
 import de.timmeey.oeffiwatch.line.LineFactory;
 import de.timmeey.oeffiwatch.line.LineImpl;
-import de.timmeey.oeffiwatch.line.Line.Vehicle;
 import de.timmeey.oeffiwatch.station.Station;
 import de.timmeey.oeffiwatch.util.parser.HtmlStationParser;
-import de.timmeey.oeffiwatch.util.parser.HtmlStationParser.ParseResult;
-import de.timmeey.oeffiwatch.util.parser.HtmlStationParser.ParseResult.OeffiParseError;
+import de.timmeey.oeffiwatch.util.parser.ParseResult;
+import de.timmeey.oeffiwatch.util.parser.ParseResult.OeffiParseError;
 
 /**
  * Internal class that represents a Station
