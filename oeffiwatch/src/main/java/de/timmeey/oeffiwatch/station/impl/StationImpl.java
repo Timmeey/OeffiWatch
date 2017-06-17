@@ -48,10 +48,10 @@ public class StationImpl extends Observable implements Station {
 	      .registerTypeAdapter(LineImpl.class, LineImpl.getSerializer()).registerTypeAdapter(LocalDateTime.class, Grabber.getDateTimeSerializer());
 	private static final Gson gsonPretty = builder.setPrettyPrinting().create();
 	private static final Gson gsonCompact = builder.create();
-	
+
 	private ScheduledFuture<?> scheduledFuture;
-	
-	
+
+
 	private static final Logger		LOGGER							= LoggerFactory
 	      .getLogger(StationImpl.class);
 	//Do not set yourself. use the private Setter, to ensure correct timstamps and stuff
@@ -119,7 +119,7 @@ public class StationImpl extends Observable implements Station {
 		}
 
 	}
-	
+
 
 
 	private List<Line> parseLines(String[][] lines) {
@@ -136,7 +136,7 @@ public class StationImpl extends Observable implements Station {
 	}
 
 
-	
+
 
 	@Override
 	public List<Line> lines(Vehicle... vehicles) {
@@ -156,8 +156,8 @@ public class StationImpl extends Observable implements Station {
 	public String name() {
 		return this.name;
 	}
-	
-	
+
+
 	@Override
 	public StationImpl update() throws IOException {
 		LOGGER.debug("Updating station: {}",this.name());
@@ -176,13 +176,13 @@ public class StationImpl extends Observable implements Station {
 				}
 				this.lastUpdated = LocalDateTime.now();
 
-			
+
 			return this;
 		}
 
 	}
-	
-	
+
+
 	@Override
 	public LocalDateTime lastUpdated(){
 		return this.lastUpdated;
@@ -195,7 +195,7 @@ public class StationImpl extends Observable implements Station {
 	/**
 	 * Internally used method to update an already existing station with
 	 * accidentally queried Data from the same Station but a different object
-	 * 
+	 *
 	 * Station names are unique. But BVG website tries to figure out the correct
 	 * station if someone queries it with a partial or unambigiuous (but not
 	 * "correct") station name. The real name will then be returned by the
@@ -204,13 +204,13 @@ public class StationImpl extends Observable implements Station {
 	 * merge the freshly queried departure times of the duplicate station object,
 	 * into the already existing object, so the queried data does not go to
 	 * waste.
-	 * 
+	 *
 	 * @param stationToMerge
 	 *           the station which equals this station and was accidently
 	 *           queried. Meant for the initial query on stations to retrieve
 	 *           their REAL name
-	 * @param alternativeStationName 
-	 * 
+	 * @param alternativeStationName The alternative station name to add to this station
+	 *
 	 * @return This station with updated list
 	 **/
 	public StationImpl merge(StationImpl stationToMerge, String alternativeStationName) {
@@ -241,7 +241,7 @@ public class StationImpl extends Observable implements Station {
 			return this;
 		}
 	}
-	
+
 	/**
 	 * Internal Method used to associate a station with it's alternative names (which also lead to the same station)
 	 * @return the list of already discovered alternative names for this station
@@ -305,7 +305,7 @@ public class StationImpl extends Observable implements Station {
 		}else{
 			LOGGER.trace("No observers present ({}), not running update",this.name());
 		}
-		
+
 	}
 
 
@@ -334,15 +334,15 @@ public class StationImpl extends Observable implements Station {
 		}
 		return this;
 	}
-	
-	
-	
+
+
+
 	@Override
 	public boolean isAutoUpdating(){
 		return this.scheduledFuture!=null && !this.scheduledFuture.isCancelled();
 	}
-	
-	
-	
+
+
+
 
 }
