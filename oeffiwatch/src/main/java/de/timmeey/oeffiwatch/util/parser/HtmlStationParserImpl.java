@@ -17,7 +17,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.timmeey.oeffiWatch.HtmlStationParser#stationLineInfo(java.lang.String)
 	 */
@@ -27,6 +27,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 		Map<String, String> data = new HashMap<>();
 		data.put("input", stationName);
 		data.put("start", "suchen");
+		data.put("boardType","depRT");
 		return parseStationLineInfo(getHTML(BASE_URL, data));
 	}
 
@@ -82,7 +83,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 			}
 		}
 		LOGGER.trace("Found {} lines",list.length);
-		
+
 		return list;
 	}
 
@@ -107,7 +108,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 
 	private static String getHTML(String url, Map<String, String> data) throws IOException {
 		String fetchURL = BASE_URL;
-		
+
 		try {
 			LOGGER.trace("Fetching website at URL: {}, with data: {}",fetchURL,data);
 			return Jsoup.connect(url).data(data).post().html();

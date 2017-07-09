@@ -1,31 +1,27 @@
 package de.timmeey.oeffiwatch.line;
 
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-
 import de.timmeey.oeffiwatch.Grabber;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Internal Class representing an actual line
- * 
+ *
  * @author timmeey
  *
  */
@@ -47,7 +43,7 @@ public class LineImpl implements Line {
 
 	/**
 	 * Internal method used by the injector/factory to create Lines
-	 * 
+	 *
 	 * @param departureTime
 	 *           THe departure string as returned by the website
 	 * @param lineName
@@ -74,7 +70,7 @@ public class LineImpl implements Line {
 
 	/**
 	 * Extracts the actual Name of the Line from its identifier
-	 * 
+	 *
 	 * @param name
 	 *           THe full identifier as returned by the website
 	 * @param type
@@ -100,7 +96,7 @@ public class LineImpl implements Line {
 
 	/**
 	 * Extracts the type of this line, from its identifier String
-	 * 
+	 *
 	 * @param name
 	 *           the identifier String as returned by the website
 	 * @return the Vehicle type
@@ -127,7 +123,7 @@ public class LineImpl implements Line {
 	/**
 	 * Extracts the Platform number, this line is leaving from (if present), from
 	 * its identifier String as returned by the website
-	 * 
+	 *
 	 * @param name
 	 *           The identifier string, as returned by the website
 	 * @return the Platform number, if present or NULL otherwise
@@ -158,13 +154,13 @@ public class LineImpl implements Line {
 	/**
 	 * Extracts/Expands the departure time, as returned by the website, into a
 	 * full DateTime object
-	 * 
+	 *
 	 * @param departure
 	 *           the departure ime as retunred by the website (time string)
 	 * @return Datetime of departure
 	 */
 	static LocalDateTime getDepartureDateTime(String departure, LocalDateTime nowDateTime) {
-		LocalTime internalDepartureTime = LocalTime.parse(departure);
+		LocalTime internalDepartureTime = LocalTime.parse(departure.replace("*",""));
 		LocalTime nowTime = LocalTime.now();
 		LocalDateTime departureDateTime;
 		// Determines if the departure time means (probably) the next day.
@@ -215,7 +211,7 @@ public class LineImpl implements Line {
 
 	/**
 	 * Internal method to get a serializer for this class, to be used by Gson
-	 * 
+	 *
 	 * @return a Gson conform serializer for this class
 	 */
 	public static JsonSerializer<LineImpl> getSerializer() {
@@ -233,7 +229,7 @@ public class LineImpl implements Line {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -250,7 +246,7 @@ public class LineImpl implements Line {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
