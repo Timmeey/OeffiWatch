@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package de.timmeey.oeffiwatch.line;
 
@@ -46,11 +46,11 @@ public class LineImplTest {
 	 */
 	@Test
 	public final void testLineName() {
-		assertEquals("S8", new LineImpl("14:36", "S8 (Gl. 5 )", "Hennigsdorf").lineName());
-		assertEquals("S8", new LineImpl("14:36", "S8", "Hennigsdorf").lineName());
-		assertEquals("U9", new LineImpl("14:36", "U9", "Hennigsdorf").lineName());
-		assertEquals("M13", new LineImpl("14:36", "Tra M13", "Hennigsdorf").lineName());
-		assertEquals("Tram 50", new LineImpl("14:36", "Tra 50", "Hennigsdorf").lineName());
+		assertEquals("S8", new LineImpl("14:36", "S8 (Gl. 5 )", "Hennigsdorf","").lineName());
+		assertEquals("S8", new LineImpl("14:36", "S8", "Hennigsdorf","").lineName());
+		assertEquals("U9", new LineImpl("14:36", "U9", "Hennigsdorf","").lineName());
+		assertEquals("M13", new LineImpl("14:36", "Tram M13", "Hennigsdorf","").lineName());
+		assertEquals("Tram 50", new LineImpl("14:36", "Tram 50", "Hennigsdorf","").lineName());
 
 	}
 
@@ -68,7 +68,7 @@ public class LineImplTest {
 		LocalTime departure = now.plus(5, ChronoUnit.MINUTES);
 		// Departure is in 4 Minutes, since we set the departure time to
 		// NOW+5Minutes (so it is 4:59:99999 minutes:seconds:ms)
-		assertEquals(4, new LineImpl(departure.toString(), "S8 (Gl. 5 )", "Hennigsdorf")
+		assertEquals(4, new LineImpl(departure.toString(), "S8 (Gl. 5 )", "Hennigsdorf","")
 		      .estimatedDepartureTimefromNow());
 	}
 
@@ -84,7 +84,7 @@ public class LineImplTest {
 		// Departure is in 4 Minutes, since we set the departure time to
 		// NOW+5Minutes (so it is 4:59:99999 minutes:seconds:ms)
 		assertEquals(departureDateTime,
-		      new LineImpl(departure.toString(), "S8 (Gl. 5 )", "Hennigsdorf")
+		      new LineImpl(departure.toString(), "S8 (Gl. 5 )", "Hennigsdorf","")
 		            .estimatedDepartureTime());
 	}
 
@@ -93,12 +93,12 @@ public class LineImplTest {
 	 */
 	@Test
 	public final void testType() {
-		assertEquals(Vehicle.SBahn, new LineImpl("14:36", "S8 (Gl. 5 )", "Hennigsdorf").vehicleType());
-		assertEquals(Vehicle.Tram, new LineImpl("14:36", "Tra 50", "Hennigsdorf").vehicleType());
-		assertEquals(Vehicle.Tram, new LineImpl("14:36", "Tra M13", "Hennigsdorf").vehicleType());
-		assertEquals(Vehicle.UBahn, new LineImpl("14:36", "U8", "Hennigsdorf").vehicleType());
-		assertEquals(Vehicle.Bus, new LineImpl("14:36", "Bus X96", "Hennigsdorf").vehicleType());
-		assertEquals(Vehicle.Faehre, new LineImpl("14:36", "F X96", "Hennigsdorf").vehicleType());
+		assertEquals(Vehicle.SBahn, new LineImpl("14:36", "S8 (Gl. 5 )", "Hennigsdorf","").vehicleType());
+		assertEquals(Vehicle.Tram, new LineImpl("14:36", "Tram 50", "Hennigsdorf","").vehicleType());
+		assertEquals(Vehicle.Tram, new LineImpl("14:36", "Tram M13", "Hennigsdorf","").vehicleType());
+		assertEquals(Vehicle.UBahn, new LineImpl("14:36", "U8", "Hennigsdorf","").vehicleType());
+		assertEquals(Vehicle.Bus, new LineImpl("14:36", "Bus X96", "Hennigsdorf","").vehicleType());
+		assertEquals(Vehicle.Faehre, new LineImpl("14:36", "F X96", "Hennigsdorf","").vehicleType());
 
 	}
 
@@ -107,12 +107,12 @@ public class LineImplTest {
 		assertEquals(String.format("Should return 5 as Platform number"), new Integer(5),
 		      LineImpl.getPlatform("S8 (Gl. 5 )"));
 	}
-	
+
 	@Test
 	public final void testDepartureTimeCalculation(){
 //		fail();
 	}
-	
+
 	@Test
 	public final void testDepartureTimeOverDateline(){
 //		fail();
@@ -122,12 +122,12 @@ public class LineImplTest {
 		return new LineFactory() {
 
 			@Override
-			public Line create(String departureTime, String lineName, String destination) {
+			public Line create(String departureTime, String lineName, String destination, String routeUrl) {
 				// TODO Auto-generated method stub
-				return new LineImpl(departureTime, lineName, destination);
+				return new LineImpl(departureTime, lineName, destination,routeUrl);
 			}
 		};
 	}
-	
+
 
 }

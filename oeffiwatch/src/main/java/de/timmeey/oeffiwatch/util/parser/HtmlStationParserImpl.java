@@ -78,7 +78,7 @@ public class HtmlStationParserImpl implements HtmlStationParser {
 			list = new String[entries.getElementsByTag("tr").size()][];
 			for (int i = 0; i < list.length; i++) {
 				Element entry = entries.child(i);
-				String[] line = { entry.child(0).text(), entry.child(1).text(), entry.child(2).text() };
+				String[] line = { entry.child(0).text(), entry.child(1).text(), entry.child(2).text(),entry.child(1).child(0).attributes().get("href")};
 				list[i] = line;
 			}
 		}

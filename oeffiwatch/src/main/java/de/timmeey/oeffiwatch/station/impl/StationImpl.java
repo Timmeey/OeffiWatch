@@ -127,7 +127,7 @@ public class StationImpl extends Observable implements Station {
 		ImmutableList.Builder<Line> builder = ImmutableList.builder();
 		// Starting at i=1 because first entry is the station name
 		for (int i = 0; i < lines.length; i++) {
-			Line line = lineFactory.create(lines[i][0], lines[i][1], lines[i][2]);
+			Line line = lineFactory.create(lines[i][0], lines[i][1], lines[i][2], lines[i][3]);
 			builder.add(line);
 
 		}

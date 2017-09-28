@@ -15,7 +15,7 @@ public class ApiExample {
 
 
 	// Name of the Station we want to watch
-	private final static String	stationName			= "S Tiergarten (Berlin)";
+	private final static String	stationName			= "MilaStr";
 
 	// Refresh the Data every 30 Seconds
 	private final static int		refreshPeriod		= 30;
@@ -41,19 +41,19 @@ public class ApiExample {
 			      nextDeparture.lineName(), nextDeparture.vehicleType().getName(),
 			      nextDeparture.lineEnd(), nextDeparture.estimatedDepartureTimefromNow()));
 			}
-			
+
 			//Enabling autoUpdate every 30 seconds. If something changes during update
 			// the observers will get notified.
 			//AutoUpdates only happen, if there are observers registered.
 			station.enableAutoUpdate(refreshPeriod, refreshPeriodUnit);
-			
+
 			//check if station is really autoUpdating now
 			System.out.println(String.format("Station is autoupdateing: %s", station.isAutoUpdating()));
-			
+
 			System.out.println(String.format("Last update happened at: %s", station.lastUpdated()));
 			//Need to register observers, so updates are triggered
 			station.addObserver(new Observer() {
-				
+
 				@Override
 				public void update(Observable o, Object arg) {
 					System.out.println(String.format("Now there are %s departures available", station.lines().size()));
@@ -61,18 +61,18 @@ public class ApiExample {
 					//disable autoupdate after the first change
 					station.disableAutoUpdate();
 					System.out.println(String.format("Station is autoupdateing: %s", station.isAutoUpdating()));
-					
+
 					//Stop everything. DON'T do this. THis is jsut for practical purposes in this example
 					System.exit(0);
-					
+
 				}
 			});
 			System.out.println("Observer added, waiting for update to happen");
-			
+
 			//Since the updating threads are daemonTHreads we need to wait here for something to happen
 			Thread.sleep(60*1000*60L);
 
-			
+
 		} catch (IOException e) {
 			System.out.println(
 			      "Something went wrong while fetching the website. Check your network connection");

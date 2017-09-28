@@ -36,7 +36,7 @@ public class StationImplTest {
 	public void testStationGenerationAndParsing()
 	      throws IOException, AmbigiuousStationNameException, ParseException {
 		try{
-		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
+		String[][] tmp = { { "15:30", "Tra M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
 		ParseResult result = generateParseResult("Björnson", tmp,null,null,null);
 		StationImpl station = new StationImpl("Björnson", LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
@@ -45,7 +45,7 @@ public class StationImplTest {
 		}catch(Exception e){
 			fail("There should have been no exception");
 		}
-		
+
 	}
 
 	@Test(expected = AmbigiuousStationNameException.class)
@@ -73,16 +73,16 @@ public class StationImplTest {
 	      ParseException, InterruptedException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		final String street1 = "Björnson";
 		final String street2 = "Björnson (Berlin)";
-		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
+		String[][] tmp = { { "15:30", "Tram M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
 		ParseResult result = generateParseResult(street1, tmp,null,null,null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
 
-		String[][] tmp1 = { { "15:31", "Tra M13", "Warschau" } };
-		
+		String[][] tmp1 = { { "15:31", "Tram M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
+
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(generateParseResult(street1, tmp1,null,null,null)), null);
-		
+
 		Class ftClass = stationToMerge.getClass();
 
 		Field f1 = ftClass.getDeclaredField("lastUpdated");
@@ -112,30 +112,30 @@ public class StationImplTest {
 	/**
 	 * If a station with a wrong station name is merged, there should be an
 	 * exception
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws AmbigiuousStationNameException
 	 * @throws ParseException
 	 * @throws InterruptedException
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testMergeRejectsName() throws IOException, AmbigiuousStationNameException,
 	      ParseException, InterruptedException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		final String street1 = "Björnson";
 		final String street2 = "Björnson (Berlin)";
-		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
+		String[][] tmp = { { "15:30", "Tra M13", "Warschau","" } };
 		ParseResult result = generateParseResult(street1, tmp,null, null, null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
-		
+
 
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(generateParseResult(street2,tmp,null,null,null)), null);
-		
+
 		Class ftClass = stationToMerge.getClass();
 
 		Field f1 = ftClass.getDeclaredField("lastUpdated");
@@ -148,39 +148,39 @@ public class StationImplTest {
 	 * Merging a station with a timestamp older than the actual stations
 	 * timestamp should do nothing, but adding the line name to the list of
 	 * alternative names
-	 * @throws ParseException 
-	 * @throws AmbigiuousStationNameException 
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
+	 * @throws ParseException
+	 * @throws AmbigiuousStationNameException
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testMergeDiscardsTimestamp() throws IOException, AmbigiuousStationNameException, ParseException, InterruptedException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		final String street1 = "Björnson";
 		final String street2 = "Björnson (Berlin)";
-		
+
 		                   // i'm too lazy to mock System.currentTimeMillis()
 
-		String[][] tmp1 = { { "15:29", "Tra M13", "Warschau" } };
+		String[][] tmp1 = { { "15:29", "Tram M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
 		StationImpl stationToMerge = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(generateParseResult(street1,tmp1,null,null,null)), null);
 
 
-		String[][] tmp = { { "15:30", "Tra M13", "Warschau" } };
+		String[][] tmp = { { "15:30", "Tram M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
 		ParseResult result = generateParseResult(street1, tmp,null,null,null);
 		StationImpl station1 = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(result), null);
-		
+
 		Class ftClass = stationToMerge.getClass();
 
 		Field f1 = ftClass.getDeclaredField("lastUpdated");
 		f1.setAccessible(true);
 		f1.set(station1,stationToMerge.lastUpdated().plus(10,ChronoUnit.SECONDS));
 		station1.merge(stationToMerge, street2);
-		
+
 		assertNotEquals(
 		      String.format(
 		            "Timestamp of station1 should NOT equals the timestamp of station2 after the merge. Station1: %s, station2: %s",
@@ -202,14 +202,15 @@ public class StationImplTest {
 	@Test
 	public void testGetsNewTimestampOnUpdate() throws IOException, AmbigiuousStationNameException, ParseException, InterruptedException {
 		final String street1 = "Björnson";
-		String[][] tmp = { { "15:29", "Tra M13", "Warschau" } };
+		String[][] tmp = { { "15:29", "Tram M13", "Warschau","/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n" } };
 		StationImpl station = new StationImpl(street1, LineImplTest.generateDefaultFactory(),
 		      generateParserfor(generateParseResult(street1, tmp,null,null,null)),null);
 		LocalDateTime oldTimestamp = station.lastUpdated(); // NOSONAR
-		tmp[0] = new String[3];
+		tmp[0] = new String[4];
 		tmp[0][0] = "15:30";
-		tmp[0][1] = "Tra M13";
+		tmp[0][1] = "Tram M13";
 		tmp[0][2] = "Warschau";
+		tmp[0][3]="/Fahrinfo/bin/traininfo.bin/dox/263916/102150/71990/51985/86/ld\u003d0.1\u0026backLink\u003dsq\u0026input\u003d900110010\u0026boardType\u003ddep\u0026time\u003dactual\u0026productsFilter\u003d1111111111111111\u0026maxJourneys\u003d\n";
 		Thread.sleep(10); // NOSONAR
 		station.update();
 		assertTrue("Timestamp should have changed",oldTimestamp.isBefore(station.lastUpdated()) );
@@ -226,34 +227,34 @@ public class StationImplTest {
 			}
 		};
 	}
-	
+
 	public static ParseResult generateParseResult(String stationName, String[][] lines, String errorMsg, OeffiParseError error, String[] alternativeNames){
 		return new ParseResult() {
-			
+
 			@Override
 			public String getStationName() {
 				// TODO Auto-generated method stub
 				return stationName;
 			}
-			
+
 			@Override
 			public String[][] getLines() {
 				// TODO Auto-generated method stub
 				return lines;
 			}
-			
+
 			@Override
 			public String getErrorMessage() {
 				// TODO Auto-generated method stub
 				return errorMsg;
 			}
-			
+
 			@Override
 			public OeffiParseError getError() {
 				// TODO Auto-generated method stub
 				return error;
 			}
-			
+
 			@Override
 			public String[] getAlternativeNames() {
 				// TODO Auto-generated method stub

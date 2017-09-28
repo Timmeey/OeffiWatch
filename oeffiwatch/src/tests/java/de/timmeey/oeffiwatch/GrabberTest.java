@@ -36,7 +36,7 @@ public class GrabberTest {
 	 * In this case ("Björnson Str." && "Björnson Str. (Berlin)" && "Björnson Straße (Berlin)") are the same station
 	 * and the same station will be returned. If that happens, we don't want to give the user
 	 * the "new" station, but merely update the old stations lines to the most current data, and return that station instead.
-	 * 
+	 *
 	 * In this testCase the StationNames "Straße1" and "Straße2" are referring to the same Station.
 	 * So the second query should yield the SAME object as the first query.
 	 * @throws IOException
@@ -45,15 +45,15 @@ public class GrabberTest {
 	public final void testAutoDetectionAndMergingOfSameStation() throws IOException, AmbigiuousStationNameException, ParseException {
 		final String realStationName = "Straße1";
 		final String unambigiuousDoubleStationName = "Straße2";
-	
+
 		StationFactory factory = new StationFactory() {
-			
+
 			@Override
 			public StationImpl create(String stationName,ScheduledExecutorService updateExecutor) throws IOException, AmbigiuousStationNameException, ParseException {
 				if(stationName.equals(realStationName) || stationName.equals(unambigiuousDoubleStationName)){
-					return new StationImpl(realStationName,getLineFactory(),StationImplTest.generateParserfor(StationImplTest.generateParseResult(realStationName,new String[0][], null, null,null )), updateExecutor); 
+					return new StationImpl(realStationName,getLineFactory(),StationImplTest.generateParserfor(StationImplTest.generateParseResult(realStationName,new String[0][], null, null,null )), updateExecutor);
 				}else{
-					return new StationImpl("ShouldBeDifferentSTreet",getLineFactory(),StationImplTest.generateParserfor(StationImplTest.generateParseResult("ShouldBeDifferentStreet",new String[0][], null, null,null )), updateExecutor); 
+					return new StationImpl("ShouldBeDifferentSTreet",getLineFactory(),StationImplTest.generateParserfor(StationImplTest.generateParseResult("ShouldBeDifferentStreet",new String[0][], null, null,null )), updateExecutor);
 
 				}
 			}
@@ -66,7 +66,7 @@ public class GrabberTest {
 		assertEquals(1,grabber.countKnownStations());
 		StationImpl differentStation = (StationImpl)grabber.getStation("ShouldBeDifferentSTreet");
 		grabber.getStation(realStationName);
-		
+
 		assertEquals(2,grabber.countKnownStations());
 
 		assertEquals(realStationName,firstStation.name());
@@ -78,23 +78,23 @@ public class GrabberTest {
 		assertEquals(String.format("The station should only contain 1 alternative name, But contained: %s",differentStation.getAlternativeStationNames()),1,differentStation.getAlternativeStationNames().size());
 
 
-		
-		
+
+
 		assertNotEquals(realStationName,differentStation.name());
 	}
-	
+
 	LineFactory getLineFactory(){
 		return new LineFactory() {
-			
+
 			@Override
-			public Line create(String departureTime, String lineName, String destination) {
+			public Line create(String departureTime, String lineName, String destination, String routeUrl) {
 				// TODO Auto-generated method stub
 				return null;
 			}
 		};
 	}
-	
 
-	
+
+
 
 }

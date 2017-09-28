@@ -40,6 +40,8 @@ public class LineImpl implements Line {
 	private final Vehicle			type;
 	@Expose
 	private final Integer			platform;
+	@Expose
+	private final String 			routeUrl;
 
 	/**
 	 * Internal method used by the injector/factory to create Lines
@@ -53,7 +55,7 @@ public class LineImpl implements Line {
 	 */
 	@Inject
 	LineImpl(@Assisted("departureTime") String departureTime, @Assisted("lineName") String lineName,
-	      @Assisted("destination") String destination) {
+	      @Assisted("destination") String destination, @Assisted("routeUrl") String routeUrl) {
 		LOGGER.trace("Creating Line for time: {} name: {} destination: {}", departureTime, lineName,
 		      destination);
 
@@ -63,6 +65,7 @@ public class LineImpl implements Line {
 		this.type = getVehicleType(Preconditions.checkNotNull(lineName));
 		this.lineName = lineName(lineName, type);
 		this.platform = getPlatform(lineName);
+		this.routeUrl = routeUrl;
 		LOGGER.trace(
 		      "Line created. Destination: {}, departureTim: {}, type: {}, lineName: {}, platform: {}",
 		      this.destination, this.departureTime, this.type, this.lineName, this.platform);
@@ -80,7 +83,7 @@ public class LineImpl implements Line {
 	static String lineName(String name, Vehicle type) {
 		String workingName;
 		workingName = name.replace("Bus", "");
-		workingName = workingName.replace("Tra", "");
+		workingName = workingName.replace("Tram", "");
 		workingName = workingName.trim();
 		if (workingName.contains(" ")) {
 			workingName = workingName.split(" ")[0];
@@ -160,7 +163,7 @@ public class LineImpl implements Line {
 	 * @return Datetime of departure
 	 */
 	static LocalDateTime getDepartureDateTime(String departure, LocalDateTime nowDateTime) {
-		LocalTime internalDepartureTime = LocalTime.parse(departure.replace("*",""));
+		LocalTime internalDepartureTime = LocalTime.parse(departure.replace("*","").trim());
 		LocalTime nowTime = LocalTime.now();
 		LocalDateTime departureDateTime;
 		// Determines if the departure time means (probably) the next day.
