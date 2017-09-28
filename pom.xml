@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.timmeey.oeffiwatch</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.0.1a</version>
+	<version>0.0.2a</version>
 	<name>Öffi Watch</name>
 	<description>A watcher for BVG (Berlin public transportation) scheduled vs. expected departures, from Bus/Tram/Train stations</description>
 	<packaging>pom</packaging>

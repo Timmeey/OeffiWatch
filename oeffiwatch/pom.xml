@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.timmeey.oeffiwatch</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.0.1a</version>
+		<version>0.0.2a</version>
 	</parent>
 	<artifactId>oeffiWatch</artifactId>
 
