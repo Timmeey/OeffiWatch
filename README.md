@@ -1,4 +1,4 @@
-ÖffiWatch
+ÖffiWatch [![Build Status](https://travis-ci.org/Timmeey/OeffiWatch.svg?branch=master)](https://travis-ci.org/Timmeey/OeffiWatch)
 =====
 A Library that can grab the estimated/scheduled departure times for public transport, from websites. Currently only Berlin(Germany) is supported.
 
