@@ -1,26 +1,22 @@
 package de.timmeey.oeffiwatch.station.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.timmeey.oeffiwatch.exception.AmbigiuousStationNameException;
 import de.timmeey.oeffiwatch.exception.ParseException;
 import de.timmeey.oeffiwatch.line.LineImplTest;
 import de.timmeey.oeffiwatch.util.parser.HtmlStationParser;
 import de.timmeey.oeffiwatch.util.parser.ParseResult;
-import de.timmeey.oeffiwatch.util.parser.ParseResultImpl;
 import de.timmeey.oeffiwatch.util.parser.ParseResult.OeffiParseError;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 public class StationImplTest {
 

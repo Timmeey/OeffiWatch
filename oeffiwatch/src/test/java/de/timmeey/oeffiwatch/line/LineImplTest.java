@@ -80,7 +80,7 @@ public class LineImplTest {
 	public final void testEstimatedDepartureTime() {
 		LocalTime now = LocalTime.now();
 		LocalTime departure = now.plus(5, ChronoUnit.MINUTES);
-		LocalDateTime departureDateTime = LocalDateTime.of(LocalDate.now(), departure);
+		LocalDateTime departureDateTime = LocalDateTime.now().plus(5, ChronoUnit.MINUTES);
 		// Departure is in 4 Minutes, since we set the departure time to
 		// NOW+5Minutes (so it is 4:59:99999 minutes:seconds:ms)
 		assertEquals(departureDateTime,
